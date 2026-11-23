@@ -497,14 +497,24 @@ def _wait_for(
 
 
 def _stop(process: subprocess.Popen[str]) -> None:
-    if process.poll() is None:
+    """Stop one worker or beat process and reap it.
+
+    Windows kills the process tree. Other systems signal the process this test
+    started. A process that has already exited is left alone.
+    """
+    if process.poll() is not None:
+        return
+    if os.name == "nt":
         subprocess.run(
             ["taskkill", "/PID", str(process.pid), "/T", "/F"],
             check=False,
             capture_output=True,
             text=True,
         )
+    else:
+        process.terminate()
     try:
         process.wait(timeout=5)
     except subprocess.TimeoutExpired:
         process.kill()
+        process.wait(timeout=5)
