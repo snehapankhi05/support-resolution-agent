@@ -1,0 +1,11 @@
+{
+  "policy_key": "refund_policy",
+  "version": 1,
+  "effective_from": "2026-01-01",
+  "effective_to": null,
+  "source_uri": "policies/refund_policy_v1.md",
+  "applies_to": "refund",
+  "effect": "allow",
+  "return_window_days": 30,
+  "markdown": "refund_policy_v1.md"
+}

@@ -1,0 +1,17 @@
+---
+description: Rules for MCP servers and agent-facing tools (identity, ownership, schemas)
+globs: app/mcp_servers/**,app/tools/**
+alwaysApply: false
+---
+- Servers use streamable HTTP and validate a short-lived signed token on every request
+  (signature, expiry, audience). Read the customer from the token claim `sub`.
+- No tool schema may contain `customer_id`, `reviewer_id`, `approval_status` or `amount_minor`
+  supplied by the model. `create_refund_proposal` computes the amount server-side.
+- There is NO refund-execution tool in any MCP server.
+- Ownership is checked in SQL/service code. A foreign or missing order both return
+  `ORDER_NOT_FOUND`.
+- Return structured results: `{success, data}` or `{success:false, error_code, retryable, message}`.
+- Never raise raw exceptions to the model. Never include data about other customers.
+- Check the installed MCP SDK version and docs before writing server code; do not guess APIs.
+- Every server needs tests: customer A cannot read customer B; missing/invalid/expired token
+  gets 401.

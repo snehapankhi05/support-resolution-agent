@@ -1,0 +1,11 @@
+---
+description: Protect test and evaluation integrity
+globs: tests/**,evals/**
+alwaysApply: false
+---
+- Never delete, skip, loosen or rewrite an assertion to make a test pass.
+- If a test fails, report the failure and fix the code, or ask the owner.
+- Evals assert on database state and mock-provider records, not only response text.
+- Keep a held-out eval subset; do not tune prompts against it.
+- Do not invent or hardcode result numbers; report what the run produced.
+- Integration tests roll back their transaction and must not leave data behind.

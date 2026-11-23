@@ -1,0 +1,8 @@
+sqlalchemy
+alembic
+psycopg[binary]
+pgvector
+redis
+pydantic
+pydantic-settings
+python-dotenv

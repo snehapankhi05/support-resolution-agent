@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #0b1220;
+  --color-ink-elevated: #121a2b;
+  --color-fog: #e8eef7;
+  --color-paper: #f7f9fc;
+  --color-line: #d5deec;
+  --color-line-dark: #243047;
+  --color-text: #0f172a;
+  --color-text-muted: #5b6b82;
+  --color-text-on-ink: #e8eef7;
+  --color-accent: #0f766e;
+  --color-accent-hover: #0d9488;
+  --color-accent-soft: #ccfbf1;
+  --color-warn: #b45309;
+  --color-warn-soft: #fef3c7;
+  --color-danger: #b91c1c;
+  --color-danger-soft: #fee2e2;
+  --color-ok: #047857;
+  --color-ok-soft: #d1fae5;
+  --color-lamp: #f0b429;
+
+  --font-brand: 'Fraunces', ui-serif, Georgia, serif;
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background: var(--color-fog);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-lamp);
+    outline-offset: 2px;
+  }
+}
+
+/* Login screen — restrained motion; disabled under prefers-reduced-motion. */
+.login-shell {
+  background: var(--color-ink);
+}
+
+.login-wash {
+  background: linear-gradient(
+    135deg,
+    rgb(18 26 43 / 0.95) 0%,
+    rgb(11 18 32 / 1) 45%,
+    rgb(15 118 110 / 0.18) 100%
+  );
+}
+
+.login-panel {
+  animation: login-panel-enter 240ms ease-out;
+}
+
+@keyframes login-panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.shell-enter {
+  animation: shell-enter 200ms ease-out;
+}
+
+@keyframes shell-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Case outcome — one-shot on mount (null→message); no key so polls don't replay. */
+.case-outcome-enter {
+  animation: case-outcome-enter 200ms ease-out;
+}
+
+@keyframes case-outcome-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rail-current {
+  position: relative;
+}
+
+.rail-tick {
+  display: inline-block;
+  width: 3px;
+  height: 1rem;
+  border-radius: 1px;
+  background: var(--color-lamp);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 50;
+  transform: translateY(-120%);
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.skip-link-light:focus {
+  background: var(--color-paper);
+  color: var(--color-text);
+}
+
+.skip-link-dark:focus {
+  background: var(--color-ink-elevated);
+  color: var(--color-text-on-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-panel,
+  .shell-enter,
+  .case-outcome-enter {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

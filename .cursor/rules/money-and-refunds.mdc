@@ -1,0 +1,16 @@
+---
+description: Rules for any code that moves, reserves or accounts for money (refund logic)
+globs: app/services/**,app/workflows/**,mock_services/**
+alwaysApply: false
+---
+- Money is integer paise. No float arithmetic, no Decimal-to-float conversions.
+- Refund execution order: validate stored approval -> short transaction with
+  `SELECT ... FOR UPDATE` on the order row -> reserve amount -> COMMIT -> call provider with the
+  stable idempotency key -> persist result. No network call inside a DB transaction.
+- Timeout or unclear provider result => status `unknown`; reconcile by querying the provider
+  with the idempotency key. Never create a new key for the same operation.
+- Do not trust amounts from the model or request body. Recompute from the order and rules.
+- Rely on DB constraints (CHECK, UNIQUE) as the last defence, but still validate in code for
+  clear errors.
+- Every state change writes an audit event with a redacted payload.
+- Add a concurrency test whenever reserve/execute logic changes.

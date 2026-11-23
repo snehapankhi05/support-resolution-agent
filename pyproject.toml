@@ -1,0 +1,41 @@
+[project]
+name = "support-resolution-agent"
+version = "0.1.0"
+description = "Approval-gated customer support resolution agent (LangGraph, FastAPI, Postgres, MCP)"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "sqlalchemy>=2.0",
+  "psycopg[binary]>=3.2",
+  "alembic>=1.13",
+  "pydantic>=2.7",
+  "pydantic-settings>=2.3",
+  "pgvector>=0.3",
+  "httpx>=0.27",
+  "redis>=5.0",
+  "celery>=5.4",
+  "pyjwt>=2.10",
+  "argon2-cffi>=23.1",
+  "mcp>=2.3,<3",
+  "fastembed>=0.4,<1",
+  "langgraph==1.2.24",
+  "langgraph-checkpoint-postgres==3.2.1",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+# Added in later steps (kept out of Step 1 on purpose):
+#   langchain-groq, langchain-mcp-adapters,
+# langgraph 1.2.24 runs the workflow. langgraph-checkpoint-postgres 3.2.1 stores
+# checkpoints. Its setup SQL is unqualified, so the saver sets search_path to langgraph.
+#   sentence-transformers, rank-bm25, langfuse
+# Policy embeddings use fastembed and BAAI/bge-small-en-v1.5 (384 dimensions).
+# mcp 2.3 is installed. Its server class is MCPServer, not the older FastMCP name.
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["integration: needs the docker-compose Postgres to be running"]
+
+[tool.ruff]
+line-length = 100

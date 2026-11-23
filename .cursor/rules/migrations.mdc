@@ -1,0 +1,12 @@
+---
+description: Alembic migration discipline
+globs: migrations/**
+alwaysApply: false
+---
+- Never modify an already-applied migration (`0001` and later once applied). Add a new
+  revision with `alembic revision`.
+- Migrations are hand-written, explicit, and include constraints and downgrade steps.
+- Do not weaken or drop safety constraints (CHECKs, UNIQUEs, triggers) without an ADR and
+  explicit owner approval.
+- Test: `alembic upgrade head`, then `alembic downgrade -1` and `upgrade head` on a scratch
+  database only, never on data you care about.
