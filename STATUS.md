@@ -3,7 +3,7 @@
 ## Current step
 Phases 0–10 essential scope are **complete**. Phase 9 remains complete (25/25). Phase 11 is **not started**. Phase 12 is **partial**. P6 analytics stays excluded. Reviewers and admins have a read-only Escalations inbox, separate from the pending refund queue. It lists escalated tickets and does not assign, resolve, approve, reject, or execute a payment.
 
-`main` is pushed to GitHub and matches `origin/main` at `d41e212` (28 November 2026). GitHub Actions passed on that commit. No Actions run number or URL is recorded for it. The same day's local checks were backend **172 passed**, frontend **55 passed**, Ruff passed, and the frontend production build passed. The demo video is not recorded.
+`main` is pushed to GitHub and matches `origin/main` at `eb1bc06` (28 November 2026). [Actions run 6](https://github.com/snehapankhi05/support-resolution-agent/actions/runs/46145911877) on that commit succeeded: backend Ruff and pytest, and frontend test and build. No pytest or Vitest count was copied from that log. The same day's documented local checks were backend **172 passed**, frontend **55 passed**, Ruff passed, and the frontend production build passed. Those local counts have no saved command log. The demo video is not recorded.
 
 ## Phase 9 result (21 November 2026)
 - Command: `uv run python -m evals.harness`
@@ -60,13 +60,13 @@ As of 25 November 2026:
 
 As of 28 November 2026:
 
-- `main` matches `origin/main` at `d41e212`.
-- GitHub Actions passed on `d41e212`. No Actions run number or URL is recorded here.
-- Local checks the same day: backend **172 passed**, frontend **55 passed**, Ruff passed, and the frontend production build passed.
+- `main` matches `origin/main` at `eb1bc06`.
+- [Actions run 6](https://github.com/snehapankhi05/support-resolution-agent/actions/runs/46145911877) on `eb1bc06` succeeded: backend Ruff and pytest, and frontend test and build. No pytest or Vitest count was copied from that log. `d41e212` remains the escalations commit from earlier that day.
+- Local checks documented the same day: backend **172 passed**, frontend **55 passed**, Ruff passed, and the frontend production build passed. Those counts have no saved command log.
 - The 21 November **167 passed** result and the 22 November **54 passed** result remain earlier records. Actions run 3 on `810c677` remains the 25 November CI record.
 
 ## Next
-1. Record Demos A/B/C if wanted. Git, the remote, and a green Actions run on `d41e212` are already done. The 28 November local suite recorded backend **172 passed** and frontend **55 passed**.
+1. Record Demos A/B/C if wanted. Git, the remote, and a green Actions run on `eb1bc06` are already done. The 28 November local suite recorded backend **172 passed** and frontend **55 passed**. Those counts have no saved command log.
 2. Optional Phase 10 leftovers: new-case product confirmation, AuthProvider RTL, Playwright, order-detail page.
 3. Optional Phase 11: Langfuse, and a desktop client on the Orders MCP server only. Both stay off the payment path. Neither is started.
 
@@ -81,7 +81,7 @@ As of 28 November 2026:
 
 ## Step 0 checklist (tick when true)
 - [ ] Tools installed and verified (git, uv, Python 3.11+, Docker Desktop, Node)
-- [x] Repo on GitHub, 2+ commits, no `.env` visible (`main` at `d41e212`; `.env` is gitignored)
+- [x] Repo on GitHub, 2+ commits, no `.env` visible (`main` at `eb1bc06`; `.env` is gitignored)
 - [ ] Cursor opened on this folder; rules visible in Customize > Rules
 - [ ] Prompt 0.1 to 0.4 run; findings fixed
 - [ ] `docs/notes.md` written in my own words

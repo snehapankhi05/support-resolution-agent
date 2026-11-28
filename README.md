@@ -66,7 +66,7 @@ Diagrams and limits: [`docs/architecture.md`](docs/architecture.md). Decisions: 
 | **Celery + Redis** | `workflows.run`, reconcile, Beat discovery |
 | **React (Vite)** | Customer portal + reviewer console in `frontend/` |
 
-**Note on ADR 0003:** the ADR still mentions an LLM for classification. The **running** graph is deterministic code. Do not assume a live LLM is required for the demos or for pytest.
+**Note on ADR 0003:** an earlier proposal said an LLM would classify the request and draft the reply. That proposal is history. The shipped workflow does not call a language model. The stored ticket category selects the branch, and ordinary code decides eligibility, the amount, approval, and payment. Do not assume a live LLM is required for the demos or for pytest.
 
 ### Databases (intentional isolation)
 
