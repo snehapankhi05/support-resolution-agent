@@ -2410,3 +2410,5 @@ The read-only specialist inbox is now implemented. Reviewers and admins can list
 
 The 22 November and 25 November sentences that say there is no specialist inbox were true on those dates. `learning_project.md` and `STATUS.md` are the standing record.
 
+On 28 November 2026 the local checks were backend **172 passed**, frontend **55 passed**, Ruff passed, and the frontend production build passed. `main` matches `origin/main` at `d41e212`. GitHub Actions passed on that commit. No Actions run number or URL is recorded here. The 21 November **167 passed** result, the 22 November **54 passed** result, and Actions run 3 on `810c677` remain earlier records.
+

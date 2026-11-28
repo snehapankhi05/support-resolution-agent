@@ -145,6 +145,6 @@ Synthetic data only. Phase 9 is 25 ledger cases, not a statistical holdout. Mock
 semantics may differ from real providers. No language model decides eligibility, amount,
 approval, or payment. Celery Beat must be running for scheduled discovery, and discovery
 updates the ledger without resuming a paused graph. See `learning_project.md`. This repo
-is not a production deployment guide. The latest recorded CI success is
+is not a production deployment guide. The latest recorded CI success is the GitHub Actions run on commit `d41e212`. That run passed. No Actions run number or URL is recorded for it. The earlier success remains
 [Actions run 3](https://github.com/snehapankhi05/support-resolution-agent/actions/runs/45250933873)
 on commit `810c677`. That page shows the jobs passed. It is not a pasted test count.

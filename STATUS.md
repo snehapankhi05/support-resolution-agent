@@ -3,7 +3,7 @@
 ## Current step
 Phases 0–10 essential scope are **complete**. Phase 9 remains complete (25/25). Phase 11 is **not started**. Phase 12 is **partial**. P6 analytics stays excluded. Reviewers and admins have a read-only Escalations inbox, separate from the pending refund queue. It lists escalated tickets and does not assign, resolve, approve, reject, or execute a payment.
 
-`main` is pushed to GitHub and matches `origin/main` at `810c677` (25 November 2026). [Actions run 3](https://github.com/snehapankhi05/support-resolution-agent/actions/runs/45250933873) on that commit is green: backend Ruff and pytest, and frontend install, test, and build. This documentation pass did not copy a pytest or Vitest count out of that log and did not start a new local suite. The demo video is not recorded.
+`main` is pushed to GitHub and matches `origin/main` at `d41e212` (28 November 2026). GitHub Actions passed on that commit. No Actions run number or URL is recorded for it. The same day's local checks were backend **172 passed**, frontend **55 passed**, Ruff passed, and the frontend production build passed. The demo video is not recorded.
 
 ## Phase 9 result (21 November 2026)
 - Command: `uv run python -m evals.harness`
@@ -30,8 +30,8 @@ Phases 0–10 essential scope are **complete**. Phase 9 remains complete (25/25)
 - Phase 7 (Step 9): workers, Beat discovery, crash-after-accept adoption; four operational limits remain (see `learning_project.md`)
 - Phase 8: reviewer queue (`GET /proposals`), `tickets.resolution_message` (migration `0005`), verified customer sentences
 - Phase 9 (Step 10): end-to-end ledger harness on `support_eval`, **25/25**, report above
-- Last full pytest recorded after Phase 8: `uv run pytest -q` **167 passed** in 218.82 seconds on `support_test`. That count is stale. Later tests were added, including product-name checks. This documentation pass did not rerun the full suite, Ruff, or `npm test`.
-- Phase 10 essential UI (22 Nov 2026): customer home, orders, cases list, new case, case detail with polling and a mount-only outcome fade; reviewer overview, queue, and proposal detail. Last observed `npm test`: **54 passed**. Deferred: AuthProvider/guard RTL, Playwright, order-detail page, selected-product line under the new-case dropdown, P6 analytics.
+- Phase 8 full pytest, 21 November 2026: `uv run pytest -q` **167 passed** in 218.82 seconds on `support_test`. The 28 November 2026 full suite recorded **172 passed**.
+- Phase 10 essential UI (22 Nov 2026): customer home, orders, cases list, new case, case detail with polling and a mount-only outcome fade; reviewer overview, queue, and proposal detail. That day's `npm test` was **54 passed**. A later `npm test` on 28 November 2026 was **55 passed**. Deferred: AuthProvider/guard RTL, Playwright, order-detail page, selected-product line under the new-case dropdown, P6 analytics.
 - Product names are display-only. Customer orders and tickets, and reviewer proposals, load `order_items.product_name`. The name is not in the approval hash and is not an eligibility input. Seed indexes 0–2 stay Headphones, Smart watch, and Keyboard. Indexes 3–29 use `DISPLAY_NAMES` in `scripts/seed.py`. Those 27 `support_ui` rows were renamed in place on 22 Nov 2026. Product ids, prices, orders, cases, and refund rows were not rewritten. `scripts.seed` still deletes and recreates seed data if someone runs it.
 - Human in the loop: a reviewer approves or rejects only a pending refund proposal. Code executes the refund after the stored approval. Escalated cases (`damaged_item`, failed inspection, missing delivery, missing or conflicting policy) store “A support specialist will review your case.” and create no proposal. Reviewers and admins can read those tickets at `GET /escalations` and on the Escalations page. That view shows category, product name, and the stored sentence. It does not assign, resolve, approve, reject, or pay. Staff cannot call `GET /tickets`. Ineligible non-escalating cases also create no staff task.
 - Phase 10 P0: `frontend/` Vite React TS + Tailwind v4 tokens + proxy to `:8000`
@@ -58,8 +58,15 @@ As of 25 November 2026:
 - The three-minute demo video is not recorded.
 - This pass aligned `STATUS.md`, `README.md`, `learning_project.md`, `docs/architecture.md`, and `docs/PROJECT_LEARNING_LOG.md` with the facts above. It did not change application code.
 
+As of 28 November 2026:
+
+- `main` matches `origin/main` at `d41e212`.
+- GitHub Actions passed on `d41e212`. No Actions run number or URL is recorded here.
+- Local checks the same day: backend **172 passed**, frontend **55 passed**, Ruff passed, and the frontend production build passed.
+- The 21 November **167 passed** result and the 22 November **54 passed** result remain earlier records. Actions run 3 on `810c677` remains the 25 November CI record.
+
 ## Next
-1. Record Demos A/B/C if wanted. Git, the remote, and a green Actions run are already done. A new local `uv run pytest` count is still unrecorded.
+1. Record Demos A/B/C if wanted. Git, the remote, and a green Actions run on `d41e212` are already done. The 28 November local suite recorded backend **172 passed** and frontend **55 passed**.
 2. Optional Phase 10 leftovers: new-case product confirmation, AuthProvider RTL, Playwright, order-detail page.
 3. Optional Phase 11: Langfuse, and a desktop client on the Orders MCP server only. Both stay off the payment path. Neither is started.
 
@@ -74,7 +81,7 @@ As of 25 November 2026:
 
 ## Step 0 checklist (tick when true)
 - [ ] Tools installed and verified (git, uv, Python 3.11+, Docker Desktop, Node)
-- [x] Repo on GitHub, 2+ commits, no `.env` visible (`main` at `810c677`, three commits; `.env` is gitignored)
+- [x] Repo on GitHub, 2+ commits, no `.env` visible (`main` at `d41e212`; `.env` is gitignored)
 - [ ] Cursor opened on this folder; rules visible in Customize > Rules
 - [ ] Prompt 0.1 to 0.4 run; findings fixed
 - [ ] `docs/notes.md` written in my own words
