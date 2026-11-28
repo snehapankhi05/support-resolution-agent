@@ -12,7 +12,7 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     proxy: {
-      '^/(auth|orders|tickets|runs|proposals|me|health)': {
+      '^/(auth|orders|tickets|runs|proposals|me|health|escalations)': {
         target: apiTarget,
         changeOrigin: true,
       },

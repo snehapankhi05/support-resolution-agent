@@ -56,6 +56,14 @@ export function ReviewerShell() {
               </>
             )}
           </NavLink>
+          <NavLink to="/review/escalations" className={railClass}>
+            {({ isActive }) => (
+              <>
+                {isActive ? <span className="rail-tick" aria-hidden="true" /> : null}
+                Escalations
+              </>
+            )}
+          </NavLink>
         </nav>
 
         <div className="border-t border-line-dark px-5 py-4">
@@ -111,6 +119,14 @@ export function ReviewerShell() {
               <>
                 {isActive ? <span className="rail-tick" aria-hidden="true" /> : null}
                 Queue
+              </>
+            )}
+          </NavLink>
+          <NavLink to="/review/escalations" className={mobileClass}>
+            {({ isActive }) => (
+              <>
+                {isActive ? <span className="rail-tick" aria-hidden="true" /> : null}
+                Escalations
               </>
             )}
           </NavLink>

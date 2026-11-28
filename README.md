@@ -138,7 +138,7 @@ database `support`.
 - Phases 0–10 essential scope are complete. Phase 9 is 25/25 on `support_eval` (0 unauthorized refunds, 0 duplicate payments).
 - Phase 11 (Langfuse, and an Orders MCP desktop client) is not started.
 - Phase 12 is partial: the repo is on GitHub and the latest Actions run on `main` is green. The demo video is not recorded.
-- There is no specialist inbox. Escalated cases get a customer sentence and no staff queue.
+- Reviewers and admins have a read-only Escalations inbox, separate from the pending refund queue. It lists escalated tickets and does not assign, resolve, approve, reject, or execute a payment.
 
 ## Known limitations
 Synthetic data only. Phase 9 is 25 ledger cases, not a statistical holdout. Mock provider

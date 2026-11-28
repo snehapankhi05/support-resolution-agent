@@ -20,7 +20,7 @@ There is one graph and no model on the payment path. ADR 0003 keeps the rule tha
 - **Eligibility.** `evaluate_refund_eligibility` enforces delivery, ownership, the 30-day window, a received and passed return, and the refundable balance. It does not read the database.
 - **Policy permission.** `current_refund_policy` uses metadata from documents effective today. Only `applies_to=refund` and `effect=allow` permits a proposal. Chunk text is not an input. `search_policy` returns citations and does not set permission.
 - **Workflow.** `app/workflows/support_graph.py` is one `StateGraph`. The ticket category selects the branch. `order_status` explains and does not propose. `damaged_item` escalates. `refund_request` calls `create_refund_proposal` in-process. The graph does not call the MCP servers and does not store citations on the proposal. `interrupt()` pauses. The value passed to `Command(resume=...)` is discarded.
-- **Human in the loop.** A person decides only a pending refund proposal: `POST /proposals/{id}/decision` is `approve` or `reject`, then code calls `execute_approved_refund` after the stored approval. An escalated case is a finished customer outcome. `damaged_item`, failed inspection, missing delivery, and missing or conflicting policy set the ticket and the run to `escalated`, store “A support specialist will review your case.”, and create no proposal. There is no staff route that lists those tickets. Priya cannot open `GET /tickets` (403). The reviewer queue stays empty because it lists only `pending_approval` refund proposals. Ineligible cases that do not escalate (not delivered, return not received, outside the window, already refunded) also create no proposal and no staff task. Do not put escalated tickets on the refund queue: they have no approved amount.
+- **Human in the loop.** A person decides only a pending refund proposal: `POST /proposals/{id}/decision` is `approve` or `reject`, then code calls `execute_approved_refund` after the stored approval. An escalated case is a finished customer outcome. `damaged_item`, failed inspection, missing delivery, and missing or conflicting policy set the ticket and the run to `escalated`, store “A support specialist will review your case.”, and create no proposal. Reviewers and admins can list those tickets with `GET /escalations` and open one by id. The Escalations page is separate from the pending refund queue. It shows category, catalog product name, and the stored sentence. It does not assign, resolve, approve, reject, or call `execute_approved_refund`. Priya cannot open `GET /tickets` (403). The reviewer queue lists only `pending_approval` refund proposals. Ineligible cases that do not escalate (not delivered, return not received, outside the window, already refunded) also create no proposal and no staff task. Do not put escalated tickets on the refund queue: they have no approved amount.
 - **Runs.** `POST /runs` stores one `running` row for the caller's ticket and enqueues Celery task `workflows.run` with the run id. A second call returns the active run.
 - **Approval.** `POST /proposals/{id}/decision` accepts only `approve` or `reject`. The staff id comes from the token's database row. After the commit, the same run id is queued. A duplicate decision is 409. While the run is still `awaiting_approval`, that 409 queues the run again. The worker resumes only when the proposal and `approvals` rows agree.
 - **Execution.** Reserve with `SELECT … FOR UPDATE`, commit, look up the idempotency key, then POST. A provider POST is accepted only when the body repeats the reserved amount and order. A timeout or a mismatched body becomes `unknown` and keeps the reserved paise. Execution does not release `unknown` on a confirmed 404.
@@ -126,9 +126,8 @@ Phases 0–9 are complete. Phase 10 essential UI is complete. Phase 11 is not st
 Prioritized next work, after the 25 November 2026 documentation pass:
 
 1. **Finish the remaining Phase 12 item.** Record Demos A/B/C if wanted. Git init, the GitHub remote, and a green Actions run are already done ([run 3](https://github.com/snehapankhi05/support-resolution-agent/actions/runs/45250933873) on `810c677`). A new local `uv run pytest` count is still unrecorded; do not treat **167 passed** as the current suite size. Acceptance that remains: one succeeded refund, one blocked request with zero refunds, and one timeout recovered to a single provider record, shown in the recording.
-2. **Specialist escalation queue, only with a new approval.** A read-only staff list of `escalated` tickets: category, catalog product name, and the verified sentence. No amount field, no approve or reject, no call to `execute_approved_refund`. Another customer’s ticket stays 404. Depends on leaving the refund queue as pending proposals only. Acceptance: an escalated case is visible to a reviewer and still has zero proposals and zero refund operations.
-3. **Optional Phase 10 leftovers.** A confirmation under the new-case dropdown (product name and short order id). AuthProvider and route-guard RTL. Playwright. A dedicated order-detail page. None of these change refund logic.
-4. **Optional Phase 11.** Langfuse tracing with no payment authority, and a desktop client attached only to the Orders MCP server. Neither may import `execute_approved_refund` or the decision route.
+2. **Optional Phase 10 leftovers.** A confirmation under the new-case dropdown (product name and short order id). AuthProvider and route-guard RTL. Playwright. A dedicated order-detail page. None of these change refund logic.
+3. **Optional Phase 11.** Langfuse tracing with no payment authority, and a desktop client attached only to the Orders MCP server. Neither may import `execute_approved_refund` or the decision route.
 
 ### Phase 8 — complete, reviewer queue and customer sentences
 
@@ -178,7 +177,7 @@ Completed on 21 November 2026. The purpose is a repeatable ledger harness, not a
 
 **Customer page.** Create a ticket and read its status. The status text comes from the API. The page does not decide eligibility or amount.
 
-**Reviewer console.** Show the pending queue, the stored evidence, the catalog product name, and approve or reject. The request body is the decision word only. Escalated cases are not in this queue.
+**Reviewer console.** Show the pending queue, the stored evidence, the catalog product name, and approve or reject. The request body is the decision word only. Escalated cases are not in this queue. They are on the separate read-only Escalations page.
 
 **Depends on.** Phase 8 (API) and Phase 9 (ledger harness green). Runtime demos use `support_ui` + Stage 5 worker when runs/refunds are exercised.
 
@@ -269,7 +268,7 @@ Missing tests called out on 21 November, updated for what exists now: there is s
 
 The six Ruff findings named in the 21 November audit (five `SIM117` in `tests/integration/test_schema_guards.py` and one unused `pytest` import in `tests/test_health.py`, plus two nested-if findings later found in `evals/harness.py`) were edited during the Phase 12 cleanup. This documentation pass did not re-run `ruff check`.
 
-**Phases 0–10 essential scope are complete. Phase 9 is complete** (25/25, 0 unauthorized refunds, 0 duplicate payments). **Phase 10 essential UI is complete** on the existing APIs, including the cases list and display-only product names. Phase 12 is partial: GitHub and a green Actions run are done; the demo video is not. Phase 11 stays optional, unstarted, and off the payment path. The four Phase 7 limits remain product behavior. Escalated cases still have no in-app specialist queue. The workflow does not use an LLM to decide eligibility, amount, approval, or payment. Do not edit `evals/expected.json` to match a later bug; fix product code or setup only after approval.
+**Phases 0–10 essential scope are complete. Phase 9 is complete** (25/25, 0 unauthorized refunds, 0 duplicate payments). **Phase 10 essential UI is complete** on the existing APIs, including the cases list and display-only product names. Phase 12 is partial: GitHub and a green Actions run are done; the demo video is not. Phase 11 stays optional, unstarted, and off the payment path. The four Phase 7 limits remain product behavior. Escalated cases are visible to reviewers and admins on a read-only inbox that does not assign, resolve, approve, reject, or pay. The workflow does not use an LLM to decide eligibility, amount, approval, or payment. Do not edit `evals/expected.json` to match a later bug; fix product code or setup only after approval.
 
 ## Known limitations that remain
 
@@ -285,7 +284,7 @@ The six Ruff findings named in the 21 November audit (five `SIM117` in `tests/in
 - Customer isolation on database `support` was not rechecked by hand. Automated coverage is on `support_test`.
 - `docs/notes.md` still has blank answers. The Step 0 checklist in `STATUS.md` is still unchecked. This rewrite did not grade them.
 - The old Ruff findings are no longer the current defect list. They were removed in the Phase 12 cleanup. A fresh `ruff check` was not run for this documentation pass.
-- Escalated tickets have a customer sentence and no reviewer inbox. The sentence promises a specialist review the app cannot assign.
+- Escalated tickets have a customer sentence and a read-only reviewer inbox. That inbox does not assign or resolve the case.
 - Product names are catalog display data. They do not change eligibility, approval, or payment.
 
 ## What this record did not verify

@@ -1,4 +1,5 @@
 export { apiFetch, type ApiFetchOptions } from './client'
+export { getEscalation, listEscalations, type Escalation } from './escalations'
 export { ApiError, formatApiDetail } from './errors'
 export { getOrder, listOrders, truncateId, type Order } from './orders'
 export {

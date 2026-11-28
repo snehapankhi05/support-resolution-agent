@@ -13,6 +13,8 @@ PROTECTED = (
     ("/tickets", "get"),
     ("/tickets/{ticket_id}", "get"),
     ("/tickets", "post"),
+    ("/escalations", "get"),
+    ("/escalations/{ticket_id}", "get"),
     ("/proposals/{proposal_id}/decision", "post"),
     ("/runs", "post"),
 )

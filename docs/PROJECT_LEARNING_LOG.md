@@ -2368,7 +2368,7 @@ Release readiness without upgrading `support` or adding deployment platforms.
 
 **Not verified.** Full local pytest re-run; Actions on a remote (this tree was not a git repo when CI was added). No `support` migration.
 
-**Next at this entry.** `git init`/remote, confirm CI green, optional Loom/OBS. The 25 November 2026 entry below is the current standing record. The 22 November alignment that follows this section was true that day and is superseded by that later entry.
+**Next at this entry.** `git init`/remote, confirm CI green, optional Loom/OBS. The 28 November 2026 entry at the end of this log is the current standing record. The 22 November alignment that follows this section was true that day. The 25 November entry corrected the git and Actions facts and was true that day.
 
 ---
 
@@ -2401,4 +2401,12 @@ Documentation only. No application code, tests, migrations, configuration, CI wo
 **Phase status after this entry.** Phases 0–10 essential scope are complete. Phase 9 remains 25/25 with zero unauthorized refunds and zero duplicate payments (`evals/reports/phase9.json`). Phase 11 (Langfuse, and an Orders MCP desktop client) is not started. Phase 12 is partial: the remote and a green Actions run are done; the demo video is not recorded. There is still no specialist inbox. Beat is still required for scheduled discovery, and discovery still does not resume a paused graph. No LLM decides eligibility, amount, approval, or payment.
 
 **Files.** `STATUS.md`, `README.md`, `learning_project.md`, `docs/architecture.md`, and this log.
+
+---
+
+## 28 November 2026 — Read-only Escalations inbox
+
+The read-only specialist inbox is now implemented. Reviewers and admins can list escalated tickets with `GET /escalations` and open one by id. The Escalations page is separate from the pending refund queue (`GET /proposals`). It shows category, product name, and the stored sentence. It does not assign, resolve, approve, reject, or execute a payment. Staff still cannot call `GET /tickets`. An escalated case still creates no proposal and no refund operation.
+
+The 22 November and 25 November sentences that say there is no specialist inbox were true on those dates. `learning_project.md` and `STATUS.md` are the standing record.
 

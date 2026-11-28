@@ -1,7 +1,7 @@
 # STATUS
 
 ## Current step
-Phases 0–10 essential scope are **complete**. Phase 9 remains complete (25/25). Phase 11 is **not started**. Phase 12 is **partial**. P6 analytics stays excluded. There is no specialist inbox.
+Phases 0–10 essential scope are **complete**. Phase 9 remains complete (25/25). Phase 11 is **not started**. Phase 12 is **partial**. P6 analytics stays excluded. Reviewers and admins have a read-only Escalations inbox, separate from the pending refund queue. It lists escalated tickets and does not assign, resolve, approve, reject, or execute a payment.
 
 `main` is pushed to GitHub and matches `origin/main` at `810c677` (25 November 2026). [Actions run 3](https://github.com/snehapankhi05/support-resolution-agent/actions/runs/45250933873) on that commit is green: backend Ruff and pytest, and frontend install, test, and build. This documentation pass did not copy a pytest or Vitest count out of that log and did not start a new local suite. The demo video is not recorded.
 
@@ -33,7 +33,7 @@ Phases 0–10 essential scope are **complete**. Phase 9 remains complete (25/25)
 - Last full pytest recorded after Phase 8: `uv run pytest -q` **167 passed** in 218.82 seconds on `support_test`. That count is stale. Later tests were added, including product-name checks. This documentation pass did not rerun the full suite, Ruff, or `npm test`.
 - Phase 10 essential UI (22 Nov 2026): customer home, orders, cases list, new case, case detail with polling and a mount-only outcome fade; reviewer overview, queue, and proposal detail. Last observed `npm test`: **54 passed**. Deferred: AuthProvider/guard RTL, Playwright, order-detail page, selected-product line under the new-case dropdown, P6 analytics.
 - Product names are display-only. Customer orders and tickets, and reviewer proposals, load `order_items.product_name`. The name is not in the approval hash and is not an eligibility input. Seed indexes 0–2 stay Headphones, Smart watch, and Keyboard. Indexes 3–29 use `DISPLAY_NAMES` in `scripts/seed.py`. Those 27 `support_ui` rows were renamed in place on 22 Nov 2026. Product ids, prices, orders, cases, and refund rows were not rewritten. `scripts.seed` still deletes and recreates seed data if someone runs it.
-- Human in the loop: a reviewer approves or rejects only a pending refund proposal. Code executes the refund after the stored approval. Escalated cases (`damaged_item`, failed inspection, missing delivery, missing or conflicting policy) store “A support specialist will review your case.” and create no proposal. There is no in-app specialist queue. Staff cannot call `GET /tickets`. Ineligible non-escalating cases also create no staff task.
+- Human in the loop: a reviewer approves or rejects only a pending refund proposal. Code executes the refund after the stored approval. Escalated cases (`damaged_item`, failed inspection, missing delivery, missing or conflicting policy) store “A support specialist will review your case.” and create no proposal. Reviewers and admins can read those tickets at `GET /escalations` and on the Escalations page. That view shows category, product name, and the stored sentence. It does not assign, resolve, approve, reject, or pay. Staff cannot call `GET /tickets`. Ineligible non-escalating cases also create no staff task.
 - Phase 10 P0: `frontend/` Vite React TS + Tailwind v4 tokens + proxy to `:8000`
 - Phase 10 **P1 CLOSED** (22 Nov 2026): API client, auth module, AuthProvider (`sessionStorage`), router + role guards, polished login, customer/reviewer shells. Live verify on `support_ui`: Asha→customer shell, Priya→reviewer shell, wrong-portal redirects, session restore, logout, invalid credentials, invalid token, responsive shells, keyboard (disabled nav not focusable), reduced-motion, `/health` via Vite proxy. Mock/Celery/Beat not required for P1. No provider URL; no UI path to `execute_approved_refund`.
 - Phase 10 **P2.1** (22 Nov 2026): Orders list + live Orders nav (`GET /orders`).
@@ -60,9 +60,8 @@ As of 25 November 2026:
 
 ## Next
 1. Record Demos A/B/C if wanted. Git, the remote, and a green Actions run are already done. A new local `uv run pytest` count is still unrecorded.
-2. Specialist escalation queue, only after a separate approval: a read-only staff list of escalated tickets, with category, product name, and the verified sentence. No amount, no approve/reject, and no payment call. An escalated case must still have zero proposals and zero refund operations. The customer sentence already promises that review. The app cannot assign it.
-3. Optional Phase 10 leftovers: new-case product confirmation, AuthProvider RTL, Playwright, order-detail page.
-4. Optional Phase 11: Langfuse, and a desktop client on the Orders MCP server only. Both stay off the payment path. Neither is started.
+2. Optional Phase 10 leftovers: new-case product confirmation, AuthProvider RTL, Playwright, order-detail page.
+3. Optional Phase 11: Langfuse, and a desktop client on the Orders MCP server only. Both stay off the payment path. Neither is started.
 
 ## Customer cases list (22 Nov 2026)
 - Shipped: `CasesPage` at `/cases`, live Cases nav, home tile → `/cases`. Uses `GET /tickets` only. Escalated rows are highlighted. No `created_at` in TicketResponse, so none is shown. This is not future work.

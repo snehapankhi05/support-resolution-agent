@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { CustomerShell } from './components/CustomerShell'
 import { ReviewerShell } from './components/ReviewerShell'
 import { CasePage } from './pages/CasePage'
+import { EscalationDetailPage } from './pages/EscalationDetailPage'
+import { EscalationsPage } from './pages/EscalationsPage'
 import { CasesPage } from './pages/CasesPage'
 import { CustomerHomeStub } from './pages/CustomerHomeStub'
 import { LoginPage } from './pages/LoginPage'
@@ -43,6 +45,8 @@ export default function App() {
             <Route path="/review" element={<ReviewOverviewPage />} />
             <Route path="/review/queue" element={<ReviewQueuePage />} />
             <Route path="/review/proposals/:proposalId" element={<ProposalDetailPage />} />
+            <Route path="/review/escalations" element={<EscalationsPage />} />
+            <Route path="/review/escalations/:ticketId" element={<EscalationDetailPage />} />
           </Route>
         </Route>
 
