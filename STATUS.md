@@ -1,9 +1,9 @@
 # STATUS
 
 ## Current step
-Phase 10 essential UI is **complete**. Phase 12 is **partial**. Phase 9 remains complete. Phase 11 is not started. P6 analytics stays excluded.
+Phases 0–10 essential scope are **complete**. Phase 9 remains complete (25/25). Phase 11 is **not started**. Phase 12 is **partial**. P6 analytics stays excluded. There is no specialist inbox.
 
-Phase 12 has the README, demo script, ADR 0003 note, and GitHub Actions workflow in the tree. Git setup, a remote push, a fresh full pytest, and a green Actions run are still pending. The demo video is not recorded.
+`main` is pushed to GitHub and matches `origin/main` at `810c677` (25 November 2026). [Actions run 3](https://github.com/snehapankhi05/support-resolution-agent/actions/runs/45250933873) on that commit is green: backend Ruff and pytest, and frontend install, test, and build. This documentation pass did not copy a pytest or Vitest count out of that log and did not start a new local suite. The demo video is not recorded.
 
 ## Phase 9 result (21 November 2026)
 - Command: `uv run python -m evals.harness`
@@ -46,18 +46,23 @@ Phase 12 has the README, demo script, ADR 0003 note, and GitHub Actions workflow
 - Phase 10 **P5 Step 3** (22 Nov 2026): `roles.test.ts` + `auth.test.ts` (mocked `apiFetch` + token). AuthProvider / route-guard RTL deferred.
 - Phase 10 **P5 Step 4** (22 Nov 2026): RTL + jsdom; `ProposalDetailPage.test.tsx` (503 Retry same decision, 409 unlock, already-recorded lock); `CasePage.test.tsx` (reserved null copy, stop polling, Refresh). `npm test` 54 passed. P6 analytics not started.
 
-## Phase 12 progress (22 Nov 2026)
-- README aligned: DB isolation, JWT rule, UI stack order, Phase 9 report link, ADR 0003 clarification.
-- Demo runbook: [`docs/demo-script.md`](docs/demo-script.md) (A/B/C). The video is not recorded.
-- CI workflow: [`.github/workflows/ci.yml`](.github/workflows/ci.yml) — ruff + pytest (`support_test`) + frontend test/build. Does not migrate `support`.
-- Ruff clean-up for CI: schema-guard `with` combines, unused pytest import, harness importlib side-effects. The older “six Ruff findings remain” note is out of date. This documentation pass did not re-run Ruff.
-- **Still pending:** this folder is not a git repository, so there is no remote and Actions has never run. A full `uv run pytest` has not been recorded since 21 Nov.
+## Phase 12 progress
+Historical (22 Nov 2026): README, [`docs/demo-script.md`](docs/demo-script.md), the ADR 0003 deterministic-graph note, and [`.github/workflows/ci.yml`](.github/workflows/ci.yml) were written. That note said the folder was not a git repository. That sentence is no longer true.
+
+As of 25 November 2026:
+
+- Remote: `https://github.com/snehapankhi05/support-resolution-agent.git`, branch `main`.
+- Commits on `main`: `a892215` Integrated project, `3815aa7` CI lockfile and Ubuntu cleanup, `810c677` immediate Celery test-worker kill.
+- [Actions run 3](https://github.com/snehapankhi05/support-resolution-agent/actions/runs/45250933873) completed with success on `810c677`. The backend job’s Ruff and pytest steps succeeded. The frontend job’s install, test, and build steps succeeded. No test count from that log is recorded here.
+- The last full local pytest number in this file is still the stale **167 passed** from 21 November 2026. Later tests exist. This pass did not run pytest, Ruff, or `npm test`.
+- The three-minute demo video is not recorded.
+- This pass aligned `STATUS.md`, `README.md`, `learning_project.md`, `docs/architecture.md`, and `docs/PROJECT_LEARNING_LOG.md` with the facts above. It did not change application code.
 
 ## Next
-1. Finish Phase 12 verification: git init, push, full pytest on `support_test`, confirm Actions green, then optionally record Demos A/B/C.
-2. Specialist escalation queue, only after a separate approval: a read-only staff list of escalated tickets, with category, product name, and the verified sentence. No amount, no approve/reject, and no payment call. An escalated case must still have zero proposals and zero refund operations.
+1. Record Demos A/B/C if wanted. Git, the remote, and a green Actions run are already done. A new local `uv run pytest` count is still unrecorded.
+2. Specialist escalation queue, only after a separate approval: a read-only staff list of escalated tickets, with category, product name, and the verified sentence. No amount, no approve/reject, and no payment call. An escalated case must still have zero proposals and zero refund operations. The customer sentence already promises that review. The app cannot assign it.
 3. Optional Phase 10 leftovers: new-case product confirmation, AuthProvider RTL, Playwright, order-detail page.
-4. Optional Phase 11: Langfuse, and a desktop client on the Orders MCP server only. Both stay off the payment path.
+4. Optional Phase 11: Langfuse, and a desktop client on the Orders MCP server only. Both stay off the payment path. Neither is started.
 
 ## Customer cases list (22 Nov 2026)
 - Shipped: `CasesPage` at `/cases`, live Cases nav, home tile → `/cases`. Uses `GET /tickets` only. Escalated rows are highlighted. No `created_at` in TicketResponse, so none is shown. This is not future work.
@@ -70,7 +75,7 @@ Phase 12 has the README, demo script, ADR 0003 note, and GitHub Actions workflow
 
 ## Step 0 checklist (tick when true)
 - [ ] Tools installed and verified (git, uv, Python 3.11+, Docker Desktop, Node)
-- [ ] Repo on GitHub, 2+ commits, no `.env` visible
+- [x] Repo on GitHub, 2+ commits, no `.env` visible (`main` at `810c677`, three commits; `.env` is gitignored)
 - [ ] Cursor opened on this folder; rules visible in Customize > Rules
 - [ ] Prompt 0.1 to 0.4 run; findings fixed
 - [ ] `docs/notes.md` written in my own words

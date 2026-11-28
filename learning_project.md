@@ -4,7 +4,7 @@ This is the standing record of the project, what the code actually does, and the
 
 Rewritten against the code on 21 November 2026. No application code, tests, migrations, or databases were changed for this rewrite.
 
-Learning step numbers and implementation phase numbers are different series. Steps 0–6 are the original learning steps and are complete. Steps 7 and 8 in the original plan were the workflow and the human approval. Those were built as implementation Phases 0–6, together with the payment-response check, `POST /runs`, checkpoints, and safe resume. Original Steps 9–12 map to Phases 7–12 below. Phases 7, 8, and 9 are complete. Phase 7 still has four operational limitations. Phase 9 scored 25/25 on database `support_eval`.
+Learning step numbers and implementation phase numbers are different series. Steps 0–6 are the original learning steps and are complete. Steps 7 and 8 in the original plan were the workflow and the human approval. Those were built as implementation Phases 0–6, together with the payment-response check, `POST /runs`, checkpoints, and safe resume. Original Steps 9–12 map to Phases 7–12 below. Phases 0–10 essential scope are complete. Phase 7 still has four operational limitations. Phase 9 scored 25/25 on database `support_eval`. Phase 11 is not started. Phase 12 is partial as of 25 November 2026: the repository is on GitHub and Actions run 3 is green; the demo video is not recorded.
 
 ## What this project is
 
@@ -12,7 +12,7 @@ An approval-gated support workflow for one fictional electronics store. A custom
 
 The financial ledger is Postgres: `orders.refund_committed_minor` and `refund_operations`. LangGraph checkpoints live in schema `langgraph` and store only where the workflow paused. Policy citations do not authorize a refund. The three MCP servers can read orders and returns, search policy, and store a proposal. They cannot approve or pay. `execute_approved_refund` is not an HTTP route and not an MCP tool. The payment provider is a local mock.
 
-There is one graph and no model on the payment path. ADR 0003 still says an LLM classifies and drafts. That sentence is older than the approved design. The running workflow does not classify, choose an amount, approve, or pay.
+There is one graph and no model on the payment path. ADR 0003 keeps the rule that code decides the amount, ownership, eligibility, approval, and payment. Its earlier proposal, that an LLM would classify the request and draft the reply, is recorded as history. The running workflow does not classify, choose an amount, approve, or pay.
 
 ## How the pieces connect
 
@@ -117,15 +117,15 @@ Four operational limitations remain:
 | 10 Evaluation | Phase 9 | Complete. Recorded below. Evidence in `evals/reports/phase9.json` |
 | 12 Frontend | Phase 10 | **Essential complete** 22 Nov 2026. Customer home, orders, cases list, new case, case detail; reviewer overview, queue, proposal detail. Product names are display-only. Vitest last observed at 54 passed. Deferred: AuthProvider RTL, Playwright, order-detail page, selected-product line under the new-case dropdown, P6 analytics |
 | 11 Extensions, choose two | Phase 11 | Not started. Optional for a safe core. Langfuse, and a desktop client on the Orders MCP server only. Off the payment path |
-| 12 Release work | Phase 12 | **Partial** 22 Nov 2026. README, demo script, ADR 0003 note, and GitHub Actions workflow are in the tree. Git init, remote push, a fresh full pytest, and a green Actions run are still pending. Demo video not recorded |
+| 12 Release work | Phase 12 | **Partial** 25 Nov 2026. README, demo script, ADR 0003 note, CI workflow, GitHub remote, and a green Actions run on `810c677` are done. Demo video not recorded. The 21 Nov **167 passed** figure is still the last written full-suite count and is stale |
 
 ## Final roadmap
 
-Phases 0–9 are complete. Phase 10 essential UI is complete. Phase 11 is not started. Phase 12 is partial: the release docs and CI workflow are written, and git, a full test run, and a green Actions check are not.
+Phases 0–9 are complete. Phase 10 essential UI is complete. Phase 11 is not started. Phase 12 is partial: the release docs, CI workflow, GitHub remote, and a green Actions run are in place. The demo video is not recorded. The numbered list below is the current plan. The 22 November wording that said git and Actions were still pending is kept in the Phase 12 section as history.
 
-Prioritized next work, after this documentation pass:
+Prioritized next work, after the 25 November 2026 documentation pass:
 
-1. **Finish Phase 12 verification.** `git init`, push to a remote, rerun `uv run pytest` on `support_test`, and confirm the Actions workflow is green. Then record Demos A/B/C if wanted. Depends on no further product change. Acceptance: the repo has a remote, CI is green, one succeeded refund, one blocked request with zero refunds, and one timeout recovered to a single provider record.
+1. **Finish the remaining Phase 12 item.** Record Demos A/B/C if wanted. Git init, the GitHub remote, and a green Actions run are already done ([run 3](https://github.com/snehapankhi05/support-resolution-agent/actions/runs/45250933873) on `810c677`). A new local `uv run pytest` count is still unrecorded; do not treat **167 passed** as the current suite size. Acceptance that remains: one succeeded refund, one blocked request with zero refunds, and one timeout recovered to a single provider record, shown in the recording.
 2. **Specialist escalation queue, only with a new approval.** A read-only staff list of `escalated` tickets: category, catalog product name, and the verified sentence. No amount field, no approve or reject, no call to `execute_approved_refund`. Another customer’s ticket stays 404. Depends on leaving the refund queue as pending proposals only. Acceptance: an escalated case is visible to a reviewer and still has zero proposals and zero refund operations.
 3. **Optional Phase 10 leftovers.** A confirmation under the new-case dropdown (product name and short order id). AuthProvider and route-guard RTL. Playwright. A dedicated order-detail page. None of these change refund logic.
 4. **Optional Phase 11.** Langfuse tracing with no payment authority, and a desktop client attached only to the Orders MCP server. Neither may import `execute_approved_refund` or the decision route.
@@ -208,17 +208,19 @@ The original list has three extensions. Two are selected. The third stays writte
 
 **Done in the tree.** `README.md` points at the architecture, the ADRs, and the Phase 9 report, and it states the deterministic graph. `docs/demo-script.md` covers Demos A, B, and C. ADR 0003 says the shipped graph does not require an LLM. `.github/workflows/ci.yml` runs Ruff, pytest on `support_test` with Postgres and Redis services, and frontend `npm test` plus `npm run build`. The workflow’s pytest step rewrites away from a casual migrate of database `support` via the test guard. The Phase 12 Ruff edits removed the old `SIM117` findings in `tests/integration/test_schema_guards.py`, the unused pytest import in `tests/test_health.py`, and two nested-if findings in `evals/harness.py`.
 
-**Still pending.**
+**Pending as of 22 November 2026 (historical).** That pass said this folder was not a git repository, so there was no remote and Actions had never run. It also had not re-run Ruff or a full pytest since the 21 November **167 passed** result.
 
-1. This folder is not a git repository (confirmed 22 November 2026). There is no remote and Actions has never run.
-2. A full `uv run pytest` has not been recorded since the 21 November **167 passed** run. Later tests exist, so that count is stale.
-3. This documentation pass did not re-run Ruff. The cleanup was reported clean when Phase 12 CI was added.
+**State on 25 November 2026.**
+
+1. The folder is a git repository. `main` tracks `origin/main` at `810c677` on `https://github.com/snehapankhi05/support-resolution-agent.git`.
+2. [Actions run 3](https://github.com/snehapankhi05/support-resolution-agent/actions/runs/45250933873) completed successfully on that commit. Backend Ruff and pytest succeeded. Frontend install, test, and build succeeded. This pass did not copy a test count from the log.
+3. A full local `uv run pytest` count newer than **167 passed** is still not written down. Later tests exist, so 167 is stale. This pass did not run pytest or Ruff.
 4. The three-minute video is not recorded.
 5. Upgrading database `support` from its last stated Alembic `0002` through `0005`, and ingesting policy there, remains a separate approved write. It is not part of pytest and not part of closing Phase 12 unless that write is explicitly approved. Demo traffic for the UI has been using `support_ui`.
 
 **Depends on.** Phases 7, 8, 9, and 10. Phase 9's report is `evals/reports/phase9.json`. Phase 11 can land before or after the recording. The recording uses the deterministic path.
 
-**Acceptance.** A clean machine follows the README and the three demos match the ledger: one succeeded refund, zero refunds for the blocked request, one provider record after the timeout recovery. CI is green on a pushed remote. `STATUS.md` does not claim LangGraph is unstarted. Those checks are not met yet.
+**Acceptance.** A clean machine follows the README and the three demos match the ledger: one succeeded refund, zero refunds for the blocked request, one provider record after the timeout recovery. CI is green on a pushed remote. That CI check is met by Actions run 3. The recorded demo is not met. `STATUS.md` does not claim LangGraph is unstarted.
 
 **Effort.** About two to three days, plus the recording.
 
@@ -252,7 +254,7 @@ Read-only review on 21 November 2026 against `AGENTS.md`, `docs/business-rules.m
 | Worker recovery | PARTIAL | Beat, discovery, the live `workflows.run` order-status task, and crash-after-accept are tested. The four Phase 7 limits below are still true. |
 | End-to-end ledger harness | PASS | Phase 9 scored 25/25 on `support_eval`. Report `evals/reports/phase9.json`. Unauthorized 0, duplicate 0. Frozen expected SHA-256 `968e054c87960dfa3df3a8eba3b4decd8cfa7e394360254ef2f86c7b67e2ee4b`. This documentation pass did not rerun the harness. |
 | Frontend | PASS for essential Phase 10 | `frontend/src/App.tsx` has customer home, orders, cases, new case, case detail, and reviewer overview, queue, and proposal detail. The 21 Nov audit predated that app. Product names are display-only. |
-| Release | PARTIAL | README, demo script, ADR 0003, and `.github/workflows/ci.yml` exist. Git, a fresh full pytest, and a green Actions run are pending. |
+| Release | PARTIAL | README, demo script, ADR 0003, and `.github/workflows/ci.yml` exist. On 25 Nov 2026 `main` is on GitHub at `810c677` and Actions run 3 is green. The demo video is not recorded. The written full-suite count is still the stale 167. |
 | Customer isolation on database `support` | NOT VERIFIED | Automated tests use `support_test`. This audit did not read `support`. The last stated version for `support` is Alembic `0002`. |
 | This audit's own suite run | NOT VERIFIED | No pytest was started for this record. The number **167 passed** is carried forward from the Phase 8 run. |
 
@@ -267,7 +269,7 @@ Missing tests called out on 21 November, updated for what exists now: there is s
 
 The six Ruff findings named in the 21 November audit (five `SIM117` in `tests/integration/test_schema_guards.py` and one unused `pytest` import in `tests/test_health.py`, plus two nested-if findings later found in `evals/harness.py`) were edited during the Phase 12 cleanup. This documentation pass did not re-run `ruff check`.
 
-**Phase 9 is complete. Phase 10 essential UI is complete** on the existing APIs, including the cases list and display-only product names. Phase 12 is partial. Phase 11 stays optional and off the payment path. The four Phase 7 limits remain product behavior. Escalated cases still have no in-app specialist queue. Do not edit `evals/expected.json` to match a later bug; fix product code or setup only after approval.
+**Phases 0–10 essential scope are complete. Phase 9 is complete** (25/25, 0 unauthorized refunds, 0 duplicate payments). **Phase 10 essential UI is complete** on the existing APIs, including the cases list and display-only product names. Phase 12 is partial: GitHub and a green Actions run are done; the demo video is not. Phase 11 stays optional, unstarted, and off the payment path. The four Phase 7 limits remain product behavior. Escalated cases still have no in-app specialist queue. The workflow does not use an LLM to decide eligibility, amount, approval, or payment. Do not edit `evals/expected.json` to match a later bug; fix product code or setup only after approval.
 
 ## Known limitations that remain
 
@@ -293,4 +295,4 @@ The six Ruff findings named in the 21 November audit (five `SIM117` in `tests/in
 - A new `ruff check` for this pass.
 - A new read of `support` or `support_test` during this edit.
 - Whether the API, the workers, or the MCP servers are running.
-- Git history. An earlier check reported that this folder was not a git repository.
+- Git history, at the time of the 22 November rewrite. An earlier check reported that this folder was not a git repository. The 25 November 2026 entry in `docs/PROJECT_LEARNING_LOG.md` records the later remote and the green Actions run. That later entry did not rerun pytest.

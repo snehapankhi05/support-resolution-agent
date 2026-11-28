@@ -7,15 +7,16 @@ is not part of the first workflow.
 
 LangGraph 1.2.24 runs the workflow. `POST /runs` stores the run and enqueues a Celery
 task. The task continues that run's `thread_id` and stores checkpoints in schema
-`langgraph`. It refuses database `support`. The UI is still planned. The sections
-below say which parts already run.
+`langgraph`. It refuses database `support`. The essential React customer and reviewer
+UI is built (Phase 10). The sections below say which parts already run. No language
+model decides eligibility, the amount, approval, or payment.
 
 ## 1. System overview
 
 ```mermaid
 flowchart LR
-  C["Customer UI<br/>planned"] --> API["FastAPI"]
-  R["Reviewer UI<br/>planned"] --> API
+  C["Customer UI<br/>shipped"] --> API["FastAPI"]
+  R["Reviewer UI<br/>shipped"] --> API
   API --> DB[("PostgreSQL + pgvector")]
   API --> Q[("Redis queue")]
   Q --> W["Celery worker"]
@@ -54,6 +55,7 @@ open operation by its idempotency key. It has no model and it does not POST a re
 | Messages | A refund sentence comes from the refund row. Ineligible, order-status, rejected, and escalated sentences are the code text stored in `tickets.resolution_message` (Alembic `0005`). The customer summary is not that sentence. |
 | Workflow | `app/workflows/support_graph.py`. Graph tests use `InMemorySaver`. The worker uses `PostgresSaver`. |
 | Worker | `app/worker.py`. The task calls `execute_workflow` with the run id only. It sends `Command(resume=...)` only after an `approvals` row is committed, and the graph ignores that value. |
+| UI | Essential React app in `frontend/`: customer home, orders, cases, new case, case detail; reviewer overview, queue, and proposal detail. It cannot call `execute_approved_refund`. Escalated tickets are not a staff inbox. |
 
 Database `support` is Alembic `0002` and does not have migration
 `0004`. Pytest applies `0004` to `support_test`: partial unique index
@@ -202,7 +204,10 @@ not POST. A matching provider record is copied onto `reserved`, `unknown`, `subm
 or `processing`. A mismatched amount or order is audited and left unchanged. Saving
 `unknown`, `submitted`, or `processing` publishes `payments.reconcile`. `payments.discover`
 publishes every open row again, including a `reserved` row whose worker died before
-saving the provider result. Celery Beat publishes that task every 60 seconds.
+saving the provider result. Celery Beat publishes that task every 60 seconds only
+while a Beat process is running. The API does not start Beat. Discovery updates the
+ledger and does not resume the LangGraph thread, so a run can stay `awaiting_approval`
+after the refund is `succeeded`.
 `RECONCILE_DISCOVER_SECONDS` changes the interval. The schedule carries no amount and
 no approval. A lookup timeout leaves the row as it is and the task asks to run again
 in 30 seconds, up to 8 times. A confirmed 404 releases only an `unknown` row whose

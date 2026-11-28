@@ -2368,7 +2368,7 @@ Release readiness without upgrading `support` or adding deployment platforms.
 
 **Not verified.** Full local pytest re-run; Actions on a remote (this tree was not a git repo when CI was added). No `support` migration.
 
-**Next at this entry.** `git init`/remote, confirm CI green, optional Loom/OBS. The later documentation-alignment entry is the current standing record.
+**Next at this entry.** `git init`/remote, confirm CI green, optional Loom/OBS. The 25 November 2026 entry below is the current standing record. The 22 November alignment that follows this section was true that day and is superseded by that later entry.
 
 ---
 
@@ -2387,4 +2387,18 @@ Read-only review of the current tree, then documentation only. No application co
 **Roadmap, in order.** (1) Finish Phase 12 verification: git, remote, full pytest, green Actions, then an optional recording. (2) A specialist queue only after a new approval: read-only escalated tickets, no amount, no decision, no payment; the case must still have zero proposals and zero refund operations. (3) Optional Phase 10 leftovers: new-case product confirmation, AuthProvider RTL, Playwright, order detail. (4) Optional Phase 11: Langfuse and an Orders-MCP desktop client, both off the payment path.
 
 **Not verified in this pass.** A fresh full pytest, a fresh frontend test or build, a fresh Ruff run, the Phase 9 harness, and whether the API or worker processes are up. Standing record: `learning_project.md` and `STATUS.md`.
+
+---
+
+## 25 November 2026 — Documentation aligned with GitHub
+
+Documentation only. No application code, tests, migrations, configuration, CI workflows, or databases were changed. Nothing was committed or pushed in this pass.
+
+**What changed in the story.** The 22 November alignment said this folder was not a git repository and that Actions had never run. That was true then. It is not true now. `main` tracks `origin/main` at `810c677` on `https://github.com/snehapankhi05/support-resolution-agent.git`. The three commits are `a892215` (Integrated project), `3815aa7` (CI lockfile and Ubuntu cleanup), and `810c677` (immediate kill of Celery test workers).
+
+**CI evidence, not a new test run.** [Actions run 3](https://github.com/snehapankhi05/support-resolution-agent/actions/runs/45250933873) on `810c677` completed with success. The backend job’s Ruff step and pytest step succeeded. The frontend job’s install, test, and build steps succeeded. This entry does not record a pytest or Vitest count from that log. The last written full local pytest count remains **167 passed** on 21 November 2026 and is stale. The last written frontend count remains **54 passed** on 22 November 2026. This pass did not rerun either suite, Ruff, or the Phase 9 harness.
+
+**Phase status after this entry.** Phases 0–10 essential scope are complete. Phase 9 remains 25/25 with zero unauthorized refunds and zero duplicate payments (`evals/reports/phase9.json`). Phase 11 (Langfuse, and an Orders MCP desktop client) is not started. Phase 12 is partial: the remote and a green Actions run are done; the demo video is not recorded. There is still no specialist inbox. Beat is still required for scheduled discovery, and discovery still does not resume a paused graph. No LLM decides eligibility, amount, approval, or payment.
+
+**Files.** `STATUS.md`, `README.md`, `learning_project.md`, `docs/architecture.md`, and this log.
 

@@ -135,9 +135,16 @@ database `support`.
 ## Status and roadmap
 - Live status: [`STATUS.md`](STATUS.md)
 - Phase roadmap / limits: [`learning_project.md`](learning_project.md)
-- Phase 10 essential UI (P0–P5) is complete; Phase 11 (Langfuse / Orders-MCP desktop) stays optional
+- Phases 0–10 essential scope are complete. Phase 9 is 25/25 on `support_eval` (0 unauthorized refunds, 0 duplicate payments).
+- Phase 11 (Langfuse, and an Orders MCP desktop client) is not started.
+- Phase 12 is partial: the repo is on GitHub and the latest Actions run on `main` is green. The demo video is not recorded.
+- There is no specialist inbox. Escalated cases get a customer sentence and no staff queue.
 
 ## Known limitations
 Synthetic data only. Phase 9 is 25 ledger cases, not a statistical holdout. Mock provider
-semantics may differ from real providers. Phase 7 recovery limits remain — see
-`learning_project.md`. This repo is not a production deployment guide.
+semantics may differ from real providers. No language model decides eligibility, amount,
+approval, or payment. Celery Beat must be running for scheduled discovery, and discovery
+updates the ledger without resuming a paused graph. See `learning_project.md`. This repo
+is not a production deployment guide. The latest recorded CI success is
+[Actions run 3](https://github.com/snehapankhi05/support-resolution-agent/actions/runs/45250933873)
+on commit `810c677`. That page shows the jobs passed. It is not a pasted test count.
